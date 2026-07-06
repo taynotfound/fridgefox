@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0c0a09"/>
+  <rect width="512" height="512" rx="112" fill="url(#g)" opacity="0.14"/>
+  <defs>
+    <radialGradient id="g" cx="0.5" cy="0.36" r="0.7">
+      <stop offset="0" stop-color="#f97316"/>
+      <stop offset="1" stop-color="#0c0a09"/>
+    </radialGradient>
+  </defs>
+  <!-- fox -->
+  <g transform="translate(256 268)">
+    <!-- ears -->
+    <path d="M-118 -70 L-72 -150 L-40 -78 Z" fill="#f97316"/>
+    <path d="M118 -70 L72 -150 L40 -78 Z" fill="#f97316"/>
+    <path d="M-104 -80 L-74 -128 L-52 -84 Z" fill="#1a1614"/>
+    <path d="M104 -80 L74 -128 L52 -84 Z" fill="#1a1614"/>
+    <!-- head -->
+    <path d="M-120 -78 C-120 40 -70 118 0 118 C70 118 120 40 120 -78 C70 -104 -70 -104 -120 -78 Z" fill="#fb923c"/>
+    <!-- cheeks / muzzle white -->
+    <path d="M0 20 C-64 20 -96 -30 -110 -74 C-60 -96 60 -96 110 -74 C96 -30 64 20 0 20 Z" fill="#faf6f2" opacity="0.95"/>
+    <path d="M0 118 C-42 118 -74 78 -86 34 C-50 8 50 8 86 34 C74 78 42 118 0 118 Z" fill="#faf6f2" opacity="0.95"/>
+    <!-- eyes -->
+    <ellipse cx="-52" cy="-30" rx="15" ry="19" fill="#1a1614"/>
+    <ellipse cx="52" cy="-30" rx="15" ry="19" fill="#1a1614"/>
+    <circle cx="-47" cy="-37" r="5" fill="#faf6f2"/>
+    <circle cx="57" cy="-37" r="5" fill="#faf6f2"/>
+    <!-- nose -->
+    <path d="M0 34 L-16 18 L16 18 Z" fill="#1a1614"/>
+    <path d="M0 34 L0 58" stroke="#1a1614" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>

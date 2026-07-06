@@ -1,0 +1,20 @@
+{
+  "name": "FridgeFox — dinner from whatever you've got",
+  "short_name": "FridgeFox",
+  "description": "Dump your fridge in, get real recipes ranked by what you already own. No hallucinations, no 50-item lists, no life-story preamble.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0a09",
+  "theme_color": "#0c0a09",
+  "categories": ["food", "lifestyle", "utilities"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Find dinner now", "url": "./index.html", "description": "Jump straight to the fridge composer" }
+  ]
+}

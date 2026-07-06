@@ -1,0 +1,11 @@
+# ── secrets: real keys live here, never commit ──
+config.js
+
+# editor / OS cruft
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# local server logs
+*.log

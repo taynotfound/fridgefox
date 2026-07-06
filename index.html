@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FridgeFox · dinner from whatever you've got</title>
+<meta name="description" content="Dump your fridge in, get real recipes ranked by what you already own. No hallucinations, no 50-item lists, no life-story preamble.">
+<meta name="theme-color" content="#0c0a09">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FridgeFox">
+<!-- speed: warm up the API + CDN origins before JS runs -->
+<link rel="preconnect" href="https://www.themealdb.com" crossorigin>
+<link rel="preconnect" href="https://api.edamam.com" crossorigin>
+<link rel="dns-prefetch" href="https://openrouter.ai">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Inter:wght@400;450;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="grain"></div>
+
+<!-- ══ LIST VIEW ══ -->
+<div id="listView">
+  <div class="wrap">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-badge">🦊 FridgeFox</div>
+      <h1 class="hero-title">Dinner from<br><em>whatever</em> you've got.</h1>
+      <p class="hero-sub">Dump your fridge in. Set your vibe. Get real recipes ranked by what you already own — not what some app wishes you'd buy.</p>
+    </header>
+
+    <!-- COMPOSER -->
+    <section class="composer">
+
+      <div class="comp-row">
+        <label class="comp-label" for="ings">🧊 In your fridge</label>
+        <div class="chips" id="chips"></div>
+        <textarea id="ings" placeholder="noodles, tomato sauce, onion, garlic, egg…" rows="2"></textarea>
+        <div class="quick" id="quickAdd">
+          <span class="quick-label">quick add:</span>
+        </div>
+      </div>
+
+      <div class="comp-grid">
+        <div class="comp-row">
+          <label class="comp-label" for="budget">💸 Budget</label>
+          <input id="budget" type="text" placeholder="0€, under €5, whatever">
+        </div>
+        <div class="comp-row">
+          <label class="comp-label">🚦 Constraints</label>
+          <div class="tags" id="tags">
+            <button class="tag" data-c="vegetarian">🌿 Veggie</button>
+            <button class="tag" data-c="no-oven">🚫 No oven</button>
+            <button class="tag" data-c="one-pan">🍳 One pan</button>
+            <button class="tag" data-c="cold">❄️ No cook</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp-row">
+        <label class="comp-label">😮‍💨 Your vibe right now</label>
+        <div class="modes" id="modes">
+          <button class="mode" data-m="low-heat" data-emoji="🌡️" data-hint="No oven, no long frying. Cold plates, quick stovetop, microwave. Built for hot days.">Low-heat</button>
+          <button class="mode" data-m="autism" data-emoji="🧠" data-hint="Exact times, exact amounts. Every step does one thing. Nothing vague, nothing implied.">Clear steps</button>
+          <button class="mode" data-m="broke" data-emoji="💸" data-hint="Fewest things to buy. Cheap staples only — beef, seafood and fancy cheese get buried.">Broke</button>
+          <button class="mode" data-m="lazy" data-emoji="🛋️" data-hint="Under 20 minutes. One pan if it can. Minimal washing up afterwards.">Lazy</button>
+          <button class="mode" data-m="fast" data-emoji="⚡" data-hint="Under 15 minutes flat, start to plate. A proper speed run.">Fast</button>
+          <button class="mode on" data-m="normal" data-emoji="🍽️" data-hint="No filter. Every recipe is fair game — ranked purely by what you already own.">Normal</button>
+        </div>
+        <div class="mode-hint" id="modeHint">No filter. Every recipe is fair game — ranked purely by what you already own.</div>
+      </div>
+
+      <div class="err" id="err"></div>
+      <button class="cook-btn" id="cta" onclick="go()">
+        <span class="cook-btn-fox">🦊</span>
+        <span>Find my dinner</span>
+        <span class="cook-btn-arr">→</span>
+      </button>
+
+    </section>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+      <div class="loader-fox">🦊</div>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+      <span id="loaderTxt">Sniffing the fridge…</span>
+    </div>
+
+    <!-- EMPTY -->
+    <div class="empty" id="empty">
+      <div class="empty-emoji">🤷</div>
+      <h3>Nothing worth cooking matched.</h3>
+      <p>Drop a constraint, or toss in a staple — onion, egg, rice, pasta.</p>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results"></div>
+    <div id="moreWrap"></div>
+
+    <footer class="foot">
+      <span>Recipes from <a href="https://www.themealdb.com" target="_blank" rel="noopener">TheMealDB</a> <span id="edamamCredit"></span></span>
+      <span class="foot-cache" id="cacheStat"></span>
+    </footer>
+
+  </div>
+</div>
+
+<!-- ══ RECIPE VIEW ══ -->
+<div id="recipeView"></div>
+
+<!-- install-app pill (shown only when installable) -->
+<button id="installBtn" hidden>📲 Install FridgeFox</button>
+
+<script src="config.js"></script>
+<script src="sources.js"></script>
+<script src="app.js"></script>
+<script>
+/* ── PWA: service worker + install prompt ── */
+if('serviceWorker' in navigator){
+  addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+let _deferredPrompt=null;
+const _installBtn=document.getElementById('installBtn');
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();_deferredPrompt=e;_installBtn.hidden=false;});
+_installBtn.addEventListener('click',async()=>{
+  if(!_deferredPrompt)return;
+  _deferredPrompt.prompt();
+  await _deferredPrompt.userChoice;
+  _deferredPrompt=null;_installBtn.hidden=true;
+});
+addEventListener('appinstalled',()=>{_installBtn.hidden=true;});
+</script>
+</body>
+</html>
